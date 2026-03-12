@@ -40,7 +40,7 @@ This is a full-stack web application built with Next.js and TypeScript. It featu
 - `src/app/` — Main application pages and API routes
 - `src/components/` — Reusable UI components
 - `src/utils/` — Utility functions and helpers
-- `src/db.json` — Mock database for local development
+- `src/dev.db` — Mock database for local development
 
 ## Scripts
 
