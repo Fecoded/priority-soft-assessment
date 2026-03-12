@@ -1,0 +1,176 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+enum SwapStatus {
+  PENDING
+  ACCEPTED
+  MANAGER_APPROVED
+  CANCELLED
+  REJECTED
+  EXPIRED
+}
+
+enum ShiftStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
+model User {
+  id           String @id @default(cuid())
+  name         String
+  email        String @unique
+  password     String
+  role         Role   @default(STAFF)
+  desiredHours Int?
+
+  managedLocations Location[] @relation("LocationManagers")
+
+  skills         StaffSkill[]
+  certifications Certification[]
+  availability   Availability[]
+  assignments    ShiftAssignment[]
+  notifications  Notification[]
+  swapRequests   SwapRequest[]     @relation("Requester")
+  targetSwaps    SwapRequest[]     @relation("TargetUser")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id   String @id @default(cuid())
+  name String @unique
+
+  staff  StaffSkill[]
+  shifts Shift[]
+}
+
+model StaffSkill {
+  id      String @id @default(cuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  skill   Skill  @relation(fields: [skillId], references: [id])
+  skillId String
+}
+
+model Shift {
+  id         String   @id @default(cuid())
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String
+
+  requiredSkill Skill  @relation(fields: [skillId], references: [id])
+  skillId       String
+
+  startDate DateTime
+  endDate   DateTime
+  headCount Int
+
+  status ShiftStatus @default(DRAFT)
+
+  assignments  ShiftAssignment[]
+  swapRequests SwapRequest[]
+
+  version Int @default(1) // optimistic locking
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Location {
+  id       String @id @default(cuid())
+  name     String
+  timezone String // e.g. "America/New_York"
+
+  managers       User[]          @relation("LocationManagers")
+  shifts         Shift[]
+  certifications Certification[]
+
+  createdAt DateTime @default(now())
+}
+
+model Certification {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String
+}
+
+model ShiftAssignment {
+  id String @id @default(cuid())
+
+  shift   Shift  @relation(fields: [shiftId], references: [id])
+  shiftId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model SwapRequest {
+  id String @id @default(cuid())
+
+  shift   Shift  @relation(fields: [shiftId], references: [id])
+  shiftId String
+
+  requester   User   @relation("Requester", fields: [requesterId], references: [id])
+  requesterId String
+
+  targetUser   User?   @relation("TargetUser", fields: [targetUserId], references: [id])
+  targetUserId String?
+
+  status SwapStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Availability {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  dayOfWeek Int // 0–6
+  startTime String // "09:00"
+  endTime   String // "17:00"
+
+  isException  Boolean   @default(false)
+  specificDate DateTime?
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  title   String
+  message String
+  read    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  entity    String
+  entityId  String
+  action    String
+  before    String?
+  after     String?
+  actorId   String
+  createdAt DateTime @default(now())
+}
