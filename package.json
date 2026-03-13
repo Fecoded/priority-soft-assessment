@@ -9,6 +9,7 @@
     "lint": "eslint",
     "prisma:format": "npx prisma format",
     "prisma:migrate": "npx prisma format && npx prisma migrate dev --name init",
+    "prisma:seed": "npx prisma db seed",
     "postinstall": "npx prisma generate"
   },
   "dependencies": {

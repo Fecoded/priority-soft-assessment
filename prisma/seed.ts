@@ -1,11 +1,12 @@
 import bcrypt from "bcryptjs";
 import { PrismaClient, Role } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 // import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
-// const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 
 const prisma = new PrismaClient({
-  // adapter,
+  adapter,
   log:
     process.env.NODE_ENV === "development"
       ? ["query", "info", "warn", "error"]
