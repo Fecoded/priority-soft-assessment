@@ -2,8 +2,12 @@ import axios from "axios";
 import { deleteCookie } from "cookies-next";
 import { handlePathname } from "./helper";
 
+const DEV_NODE_ENV = process.env.NODE_ENV === "development";
+
 export const axiosInstance = axios.create({
-  baseURL: `${window.location.origin}/api`,
+  baseURL: DEV_NODE_ENV
+    ? "http://localhost:3000/api"
+    : "https://priority-soft-assessment.vercel.app/api",
 });
 
 // Interceptor
