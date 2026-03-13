@@ -685,7 +685,7 @@ Capabilities:
 Account 2
 
 Email:
-[samsmith@gmail.com](mailto:samsmith@gmail.com)
+[david@test.com](mailto:david@test.com)
 
 Password:
 password123
@@ -737,3 +737,6 @@ ShiftSync demonstrates a simplified but realistic workforce scheduling platform 
 - suggesting alternative staff when conflicts occur
 
 The architecture focuses on **clear validation layers**, **modular services**, and **transactional safety**, providing a solid foundation for scaling into a full production scheduling system.
+
+SQLite is used for local development simplicity.
+In production (e.g., Vercel), the application uses PostgreSQL.
