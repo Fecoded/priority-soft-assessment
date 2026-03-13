@@ -3,7 +3,7 @@ import { deleteCookie } from "cookies-next";
 import { handlePathname } from "./helper";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: `${location.origin}/api`,
 });
 
 // Interceptor
