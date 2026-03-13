@@ -7,6 +7,13 @@ export const queryClientConfig: QueryClientConfig = {
       refetchOnMount: "always",
       refetchOnWindowFocus: "always",
       refetchOnReconnect: "always",
+      retry(failureCount) {
+        if (failureCount >= 1) {
+          return false;
+        }
+
+        return true;
+      },
     },
     mutations: {},
   },

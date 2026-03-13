@@ -30,8 +30,12 @@ export type Availability = {
 
 export type Skill = {
   id: string;
-  userId: string;
-  skillId: string;
+  name: string;
+};
+export type Certification = {
+  id: string;
+  name: string;
+  timezone: string;
 };
 
 export type User = {
@@ -45,4 +49,39 @@ export type User = {
   updatedAt: Date;
   availability: Availability[];
   skills: Skill[];
+  certifications: Certification[];
 };
+
+export type UserShift = {
+  id: string;
+  shiftId: string;
+  userId: string;
+  shift: Shift;
+};
+
+export interface Shift {
+  id: string;
+  locationId: string;
+  skillId: string;
+  startDate: string;
+  endDate: string;
+  headCount: number;
+  status: string;
+  version: number;
+  createdAt: string;
+  updatedAt: string;
+  location: Location;
+  requiredSkill: RequiredSkill;
+}
+
+export interface Location {
+  id: string;
+  name: string;
+  timezone: string;
+  createdAt: string;
+}
+
+export interface RequiredSkill {
+  id: string;
+  name: string;
+}

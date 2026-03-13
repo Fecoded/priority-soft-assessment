@@ -1,14 +1,19 @@
+import { User } from "@src/store/types";
 import { StateCreator } from "zustand";
 
 export interface UserState {
-  userDetails: { name: string; email: string };
-  setUserDetails: (userDetails: { name: string; email: string }) => void;
+  userDetails: User;
+  setUserDetails: (userDetails: User) => void;
+  users: User[];
+  setUsers: (users: User[]) => void;
 }
 
 export const createUserSlice: StateCreator<UserState> = (
   set,
   _,
 ): UserState => ({
-  userDetails: { name: "", email: "" },
+  userDetails: {} as User,
   setUserDetails: (userDetails) => set({ userDetails }),
+  users: [],
+  setUsers: (users) => set({ users }),
 });

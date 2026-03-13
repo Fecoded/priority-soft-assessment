@@ -60,6 +60,17 @@ export async function POST(request: Request, cxt: RouteContext) {
 
     const { locationId } = validation.data;
 
+    const existing = await prisma.certification.findFirst({
+      where: { userId: id, locationId },
+    });
+
+    if (existing) {
+      return NextResponse.json(
+        { success: false, message: "Location already certified to staff" },
+        { status: 400 },
+      );
+    }
+
     await prisma.certification.create({
       data: {
         userId: id,

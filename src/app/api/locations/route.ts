@@ -4,6 +4,7 @@ import { authenticateUser } from "@src/lib/authenticate-user";
 import { requireRole } from "@src/lib/permission";
 import { LocationSchema } from "@src/lib/validation";
 import prisma from "@src/lib/prisma";
+import { ErrorHandler } from "@src/lib/error";
 
 export async function GET(request: Request) {
   try {
@@ -18,10 +19,7 @@ export async function GET(request: Request) {
       { status: 200 },
     );
   } catch (err) {
-    return NextResponse.json(
-      { success: false, message: `Internal server error, ${err}` },
-      { status: 500 },
-    );
+    return ErrorHandler(err);
   }
 }
 
@@ -69,9 +67,6 @@ export async function POST(req: Request) {
       { status: 201 },
     );
   } catch (err) {
-    return NextResponse.json(
-      { success: false, message: `Internal server error, ${err}` },
-      { status: 500 },
-    );
+    return ErrorHandler(err);
   }
 }

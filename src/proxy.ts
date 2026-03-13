@@ -12,7 +12,7 @@ export const Routes = (checkId?: string) => {
   return RouteList;
 };
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const authToken = req.cookies.get("USER_TOKEN")?.value;
   const { pathname } = req.nextUrl;
 

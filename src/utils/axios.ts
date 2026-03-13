@@ -10,7 +10,8 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const statusCode = error?.response?.data?.statusCode;
+    const statusCode =
+      error?.response?.data?.statusCode ?? error?.response?.status;
 
     if (statusCode === 401) {
       deleteCookie("USER_TOKEN");

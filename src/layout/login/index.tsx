@@ -43,8 +43,12 @@ export const AuthLogin = () => {
 
   const handleLogin = () => {
     loginUser(values)
-      .then(() => {
-        router.replace("/");
+      .then((res) => {
+        if (res.role === "STAFF") {
+          router.replace("/shifts");
+        } else {
+          router.replace("/");
+        }
       })
       .catch((err) => {
         setOpen(true);
@@ -121,7 +125,7 @@ export const AuthLogin = () => {
               >
                 Sign in
               </Button>
-              <Typography sx={{ textAlign: "center" }}>
+              {/* <Typography sx={{ textAlign: "center" }}>
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
@@ -130,7 +134,7 @@ export const AuthLogin = () => {
                 >
                   Sign up
                 </Link>
-              </Typography>
+              </Typography> */}
             </>
           )}
         </Formik>

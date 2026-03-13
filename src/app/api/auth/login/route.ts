@@ -4,6 +4,7 @@ import * as jwt from "jsonwebtoken";
 
 import { LoginSchema } from "@src/lib/validation";
 import prisma from "@src/lib/prisma";
+import { omit } from "lodash";
 
 export async function POST(request: Request) {
   try {
@@ -51,7 +52,11 @@ export async function POST(request: Request) {
     });
 
     const response = NextResponse.json(
-      { success: true, message: "login successful" },
+      {
+        success: true,
+        message: "login successful",
+        data: omit(existingUser, ["password"]),
+      },
       { status: 200 },
     );
 

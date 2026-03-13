@@ -1,13 +1,9 @@
 import { Role, User } from "@prisma/client";
-import { NextResponse } from "next/server";
 import prisma from "./prisma";
 
 export function requireRole(user: User, roles: Role[]) {
   if (!roles.includes(user.role)) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized access" },
-      { status: 403 },
-    );
+    throw new Error("Unauthorized access");
   }
 }
 
@@ -23,10 +19,7 @@ export async function requireManagerOfLocation(user: User, locationId: string) {
     });
 
     if (!managesLocation) {
-      return NextResponse.json(
-        { success: false, message: "You cannot manage this location" },
-        { status: 400 },
-      );
+      throw new Error("You cannot manage this location");
     }
   }
 }

@@ -38,6 +38,13 @@ export const AssignSkillSchema = z.object({
   }),
 });
 
+export const AssignShiftSchema = z.object({
+  userId: z.string({
+    error: (issue) =>
+      issue.input === undefined ? { message: "user is required" } : undefined,
+  }),
+});
+
 export const CertifyStaffSchema = z.object({
   locationId: z.string({
     error: (issue) =>
@@ -81,28 +88,13 @@ export const ShiftSchema = z
           ? { message: "skillId is required" }
           : undefined,
     }),
-    startTime: z.iso.datetime({
-      error: (issue) =>
-        issue.input === undefined
-          ? {
-              message: "Invalid time format, expected 2020-01-01T06:15:00Z",
-            }
-          : undefined,
+    startTime: z.coerce.date({
+      message: "Invalid date format, expected a valid date string",
     }),
-    endTime: z.iso.datetime({
-      error: (issue) =>
-        issue.input === undefined
-          ? {
-              message: "Invalid time format, expected 2020-01-01T06:15:00Z",
-            }
-          : undefined,
+    endTime: z.coerce.date({
+      message: "End Time is required and must be a valid date",
     }),
-    headCount: z.number({
-      error: (issue) =>
-        issue.input === undefined
-          ? { message: "Head Count is required" }
-          : undefined,
-    }),
+    headCount: z.coerce.number().int().positive("Headcount must be at least 1"),
   })
   .refine((data) => data.startTime < data.endTime, {
     message: "Start time must be earlier the end time",

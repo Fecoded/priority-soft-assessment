@@ -3,6 +3,7 @@ import { omit } from "lodash";
 import * as jwt from "jsonwebtoken";
 
 import { authenticateUser } from "@src/lib/authenticate-user";
+import { ErrorHandler } from "@src/lib/error";
 
 export async function GET(request: Request) {
   try {
@@ -32,11 +33,7 @@ export async function GET(request: Request) {
         { status: 401 },
       );
     } else {
-      // Handle other potential errors
-      return NextResponse.json(
-        { success: false, message: `Internal server error, ${err}` },
-        { status: 500 },
-      );
+      return ErrorHandler(err);
     }
   }
 }
