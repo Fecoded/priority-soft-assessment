@@ -1,11 +1,11 @@
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+// import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "@prisma/client";
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL });
+// const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL });
 
 const prismaClientSingleton = () =>
   new PrismaClient({
-    adapter,
+    // adapter,
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "info", "warn", "error"]
